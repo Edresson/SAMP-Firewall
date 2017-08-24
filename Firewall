@@ -1,0 +1,45 @@
+# SAMP-Firewall
+# Layer 7 protection for samp servers
+# Credits: Edresson Casanova | BlastHosting  : https://www.blasthosting.com.br/ 
+
+#Dropando todas as conexões exeto dos cliente já conectados e clientes liberado as query
+iptables  -A  FORWARD -d youip -p udp --dport 7777  -m recent --name Jogando ! --rcheck  -m  string --algo kmp   ! --hex-string   '| 53414d50a772c948611e70 |' -m  string --algo kmp   ! --hex-string   '| 53414d50a772c948611e69 |'  -m  string --algo kmp   --hex-string   '| 53414d50a772c948611e63 |' -m  string --algo kmp   --hex-string   '| 53414d50a772c948611e72 |'  -m  string --algo kmp  !  --hex-string   '| 081e77da |'   -j DROP
+
+# Se o Client estiver na lista jogando aceitar todas as conexões do mesmo !
+iptables  -A  FORWARD -d youip -p udp --dport 7777   -m recent --name Jogando   --rcheck    -j ACCEPT
+# Liberando  Querys e  adicionando controle para raknet [ este tipo de client não manda requisição de query, então é possivel bloquea-lo] !
+iptables -A  FORWARD -d youip   -p udp --dport 7777  -m  string --algo kmp   --hex-string   '| 53414d50a772c948611e70 |'   -j ACCEPT
+iptables -A  FORWARD -d youip  -p udp --dport 7777  -m  string --algo kmp   --hex-string   '| 53414d50a772c948611e69 |'  -m recent --name raknet --set -j ACCEPT
+iptables -A  FORWARD -d youip    -p udp --dport 7777  -m  string --algo kmp   --hex-string   '| 53414d50a772c948611e63 |'   -j ACCEPT
+iptables -A  FORWARD -d youip    -p udp --dport 7777  -m  string --algo kmp   --hex-string   '| 53414d50a772c948611e72 |'  -j ACCEPT
+
+# Se mandar pacote de conexão de entrada e estiver na lista raknet aceita a connexão e adiciona na lista Jogando!
+iptables  -A  FORWARD -d youip -p udp --dport 7777  -m  string --algo kmp   --hex-string   '| 081e77da |'  -m recent --name raknet  --rcheck   -m  recent --name Jogando --set   
+
+# Resposta do cliente ,  apenas o client manda essa mensagem os programas maliciosos de falsificação não os manda ! 
+iptables  -A  FORWARD -d youip -p udp --dport 7777  -m  string   --algo kmp --hex-string '| 88 27 8a c7 d8 99 |'  -m recent --name raknet --remove  -j ACCEPT
+
+ 
+# Se mandar pacote de conexão de entrada é adicionado o ip a lista Requisicaodecookie
+iptables -A  FORWARD -d youip -p udp --dport 7777  -m  string --algo kmp --hex-string '| 08 1e 77 da|'  -m recent --name Requisicaodecookie  --set  
+
+
+# Cliente respondeu ?,chegou a essa regra ? Conexão estabelicida, se um ip chegar até aqui obviamente é uma conexão legitima
+iptables -A  FORWARD -d youip  -p udp --dport 7777  -m  string   --algo kmp --hex-string '| 88 27 8a c7 d8 99 |'  -m recent --name clienterespPadrao  --set
+
+
+# Agora iremos fazer as verificações se determinado ip está nas listas corretamente, se ele mandar mais de 10 requisições de cookie e não responder corretamente  iremos bloquear o ip dinamicamente e o mesmo ficará bloqueado até reiniciarmos nosso firewall :) 
+iptables -A  FORWARD -d youip -p udp --dport 7777 -m recent --name Requisicaodecookie --rcheck  --hitcount 10    -m recent --name clienterespPadrao ! --rcheck  -m recent --name blacklist  --set -j DROP
+
+#connectou ? perfeito :) (ou seja, respondeu corretamente em menos de 10 requisições de cookies  tiramos o ip da lista de Requisicaodecookie, assim na proxima vez que ele tentar connectar não será barrado de forma alguma.
+iptables -A  FORWARD -d youip -p udp --dport 7777  -m recent --name clienterespPadrao  --rcheck -m recent --name Requisicaodecookie  --remove -j ACCEPT
+
+
+# Blacklist é a listas  dos ips bloqueados por nosso firewall, com essa regras estamos dizendo se o ip estiver nesta lista iremos Drop(Bloquear) o pacote. 
+iptables -A  FORWARD -d youip -p udp --dport 7777  -m recent --name blacklist --rcheck -j DROP
+ 
+
+
+
+
+

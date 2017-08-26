@@ -18,7 +18,6 @@ iptables -I INPUT  -s 162.144.7.0/24 -j ACCEPT
 iptables -I INPUT  -s 149.202.241.189 -j ACCEPT
 iptables -I INPUT  -s 149.202.241.0/24 -j ACCEPT
 
-### Novas Regras dropa 1 libera o resto ! 
 iptables -I INPUT -p udp --dport 7777  -m  string --algo kmp   --hex-string   '|081e77da|'  -m recent --name nlimitcon7777 ! --rcheck  -m recent --name limitcon7777 --set -j DROP
 iptables -I INPUT  -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|081e77da|' -m recent --name limitcon7777 --rcheck -m recent --name limitcon7777 --remove -m recent --name nlimitcon7777 --set -j ACCEPT
 iptables -I INPUT  -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|081e77da|' -m recent --name nlimit7777 --rcheck -j ACCEPT	

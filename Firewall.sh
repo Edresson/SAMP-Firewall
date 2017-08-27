@@ -2,6 +2,8 @@
 # Layer 7 protection for samp servers
 # Credits: Edresson Casanova | BlastHosting  : https://www.blasthosting.com.br/ 
 
+modprobe ipt_recent ip_list_tot=10000
+
 ### Samp check server stats 	
 iptables -I INPUT  -s 66.55.155.101 -j ACCEPT
 iptables -I INPUT  -s 66.55.155.0/24 -j ACCEPT

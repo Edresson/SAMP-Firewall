@@ -1,7 +1,8 @@
 # SAMP-Firewall
 # Layer 7 protection for samp servers
 # Credits: Edresson Casanova | BlastHosting  : https://www.blasthosting.com.br/ 
-
+# Thanks for: JernejL Beta Tester 
+#Working for SA:Mp servers in port 7777
 modprobe ipt_recent ip_list_tot=10000
 
 ### Samp check server stats 	

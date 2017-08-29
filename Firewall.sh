@@ -24,15 +24,15 @@ iptables -I INPUT -p udp --dport 7777  -m  string --algo kmp   --hex-string   '|
 iptables -I INPUT  -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|081e77da|' -m recent --name limitcon7777 --rcheck -m recent --name limitcon7777 --remove -m recent --name nlimitcon7777 --set -j ACCEPT
 iptables -I INPUT  -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|081e77da|' -m recent --name nlimit7777 --rcheck -j ACCEPT	
 
-iptables -I INPUT  -p udp --dport 7777  -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e63|'  -m recent --name nlimitC7777 ! --rcheck  -m recent --name limitC7777 --set -j DROP
-iptables -I INPUT  -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e63|' -m recent --name limitC7777 --rcheck -m recent --name limitC7777 --remove -m recent --name nlimitC7777 --set -j ACCEPT
-iptables -I INPUT  -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e63|' -m recent --name nlimitR7777 --rcheck -j ACCEPT	
+iptables -I INPUT  -p udp --dport 7777  -m  string --algo kmp   --hex-string   '|53414d50|' -m  string --algo kmp   --hex-string   '|611e63|'  -m recent --name nlimitC7777 ! --rcheck  -m recent --name limitC7777 --set -j DROP
+iptables -I INPUT  -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50|' -m  string --algo kmp   --hex-string   '|611e63|' -m recent --name limitC7777 --rcheck -m recent --name limitC7777 --remove -m recent --name nlimitC7777 --set -j ACCEPT
+iptables -I INPUT  -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50|' -m  string --algo kmp   --hex-string   '|611e63|'  -m recent --name nlimitR7777 --rcheck -j ACCEPT	
 
-iptables -I INPUT  -p udp --dport 7777  -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e72|'  -m recent --name nlimitR7777 ! --rcheck  -m recent --name limitR7777 --set -j DROP
-iptables -I INPUT   -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e72|' -m recent --name limitR7777 --rcheck -m recent --name limitR7777 --remove -m recent --name nlimitR7777 --set -j ACCEPT
-iptables -I INPUT   -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e72|' -m recent --name nlimitR7777 --rcheck -j ACCEPT	
+iptables -I INPUT  -p udp --dport 7777  -m  string --algo kmp   --hex-string   '|53414d50|' -m  string --algo kmp   --hex-string   '|611e72|'   -m recent --name nlimitR7777 ! --rcheck  -m recent --name limitR7777 --set -j DROP
+iptables -I INPUT   -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50|' -m  string --algo kmp   --hex-string   '|611e72|'  -m recent --name limitR7777 --rcheck -m recent --name limitR7777 --remove -m recent --name nlimitR7777 --set -j ACCEPT
+iptables -I INPUT   -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50|' -m  string --algo kmp   --hex-string   '|611e72|'  -m recent --name nlimitR7777 --rcheck -j ACCEPT	
 
 
-iptables -I INPUT  -p udp --dport 7777  -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e69|'  -m recent --name nlimitI7777 ! --rcheck -m recent --name limitI7777 --set  -j DROP
-iptables -I INPUT   -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e69|' -m recent --name limitI7777 --rcheck -m recent --name limitI7777 --remove -m recent --name nlimitI7777 --set -j ACCEPT
-iptables -I INPUT   -p udp --dport 7777   -m  string --algo kmp   --hex-string   '|53414d50a772c94a611e69|' -m recent --name nlimitI7777 --rcheck -j ACCEPT								
+iptables -I INPUT  -p udp --dport 7777  -m  string --algo kmp   --hex-string   '|53414d50|' -m  string --algo kmp   --hex-string   '|611e69|'   -m recent --name nlimitI7777 ! --rcheck -m recent --name limitI7777 --set  -j DROP
+iptables -I INPUT   -p udp --dport 7777   -m  string --algo kmp   --hex-string  '|53414d50|' -m  string --algo kmp   --hex-string   '|611e69|'  -m recent --name limitI7777 --rcheck -m recent --name limitI7777 --remove -m recent --name nlimitI7777 --set -j ACCEPT
+iptables -I INPUT -p udp --dport 7777 -m string --algo kmp --hex-string '|53414d50|' -m  string --algo kmp   --hex-string   '|611e69|'  -m recent --name nlimitI7777 --rcheck -j ACCEPT
